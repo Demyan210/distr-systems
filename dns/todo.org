@@ -1,6 +1,0 @@
-* DONE ref: comp: set_dns_server: replace to network interface
-* TODO ref: extract Dns class, replace resolve logic from Comp to there
-* TODO fix: Net: what if src not in the net?
-* TODO ref: dns db: classes for requests and answers
-* TODO feat: comp: ping by name
-* TODO feat: dns record + update()
