@@ -1,5 +1,5 @@
 import unittest
-from main import *
+from common import *
 from dns import DnsDb, Record
 
 
@@ -94,17 +94,21 @@ class TestDns(unittest.TestCase):
         local_db = DnsDb()
         local_db.add_record(Record("narfu.ru", "1.2.3.4"))
         comp.set_dns_db(local_db)
-        comp.iface().set_dns_server("10.20.30.40")
+        comp.iface().set_dns_server("193.180.140.255")
 
         server = Comp()
         server_db = DnsDb()
-        server_db.add_record(Record("ya.ru", "2.3.4.5"))
+        server_db.add_record(Record("vk.com", "2.3.4.5"))
         server.set_dns_db(server_db)
 
         net = Network()
-        net.add_host(comp, "11.12.13.14")
-        net.add_host(server, "10.20.30.40")
+        net.add_host(comp, "111.121.131.141")
+        net.add_host(server, "193.180.140.255")
 
-        ans = comp.resolve("ya.com")
+        ans = comp.resolve("vk.ru")
         self.assertEqual(ans, None)
+
+if __name__ == '__main__':
+    unittest.main()
+
 

@@ -7,7 +7,6 @@ class NetworkInterface:
     def __init__(self):
         self.net = None
         self.addr = None
-        self.msg = None
         self.dns = None
 
     def setup(self, net, addr):
@@ -24,16 +23,6 @@ class NetworkInterface:
         if not self.net:
             return "No network"
         return self.net.ping(self.addr, addr)
-    
-    def sendMessage(self, data, dst):
-        msg = [data, self.addr, dst]
-        return msg
-        
-    def readMessage(self, msg):
-        if(msg[2] == self.addr):
-            return f"\"{msg[0]}\" from {msg[1]}"
-        else:
-            return "No messages"
 
     def resolve(self, name):
         """Resolve name."""

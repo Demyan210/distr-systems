@@ -1,5 +1,5 @@
 import unittest
-from main import *
+from common import *
 
 
 class TestComp(unittest.TestCase):
@@ -29,3 +29,6 @@ class TestNetwork(unittest.TestCase):
 
         ans = comp1.iface().ping("3.4.5.6")
         self.assertEqual(ans, "Unknown host")
+
+if __name__ == '__main__':
+    unittest.main()
