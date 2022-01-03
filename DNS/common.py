@@ -30,6 +30,16 @@ class NetworkInterface:
             return None
         return self.net.resolve(self.dns, name)
 
+    def resolveNonRec(self, dns, name):
+        """Resolve name."""
+        if not self.net:
+            return None
+        ans = self.net.resolveNonRec(dns, name)
+        if ans[1] == "IP":
+            return ans
+        if ans[1] == "DNS":
+            ans = self.resolveNonRec(ans[0], name)
+            return ans
 
 class Comp:
     """Computer."""
@@ -48,8 +58,16 @@ class Comp:
             addr = self.__local_db.resolve(name)
             if addr:
                 return addr
-
         return self.__iface.resolve(name)
+
+    def resolveNonRec(self, name):
+        """Resolve name."""
+        if self.__local_db:
+            addr = self.__local_db.resolve(name)
+            if addr: 
+                return addr
+        ans = self.__iface.resolveNonRec(self.iface().dns, name)
+        return ans[0]
 
     def set_dns_db(self, db):
         """Set DNS db."""
