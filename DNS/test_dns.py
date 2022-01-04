@@ -92,13 +92,13 @@ class TestDns(unittest.TestCase):
     def test_resolve_unknown_name(self):
         comp = Comp()
         local_db = DnsDb()
-        local_db.add_record(Record("narfu.ru", "1.2.3.4"))
+        local_db.add_record(Record("narfu.ru", "78.37.98.67"))
         comp.set_dns_db(local_db)
         comp.iface().set_dns_server("193.180.140.255")
 
         server = Comp()
         server_db = DnsDb()
-        server_db.add_record(Record("vk.com", "2.3.4.5"))
+        server_db.add_record(Record("vk.com", "87.240.190.78"))
         server.set_dns_db(server_db)
 
         net = Network()
@@ -108,6 +108,67 @@ class TestDns(unittest.TestCase):
         ans = comp.resolve("vk.ru")
         self.assertEqual(ans, None)
 
+    def test_recursive_dns_request(self):
+        comp = Comp()
+        local_db = DnsDb()
+        local_db.add_record(Record("dnevnik.ru", "178.248.232.13"))
+        comp.set_dns_db(local_db)
+        comp.iface().set_dns_server("170.240.230.13")
+
+        server = Comp()
+        server_db = DnsDb()
+        server_db.add_record(Record("ru.wikipedia.org", "91.198.174.192"))
+        server.set_dns_db(server_db)
+        comp.iface().set_dns_server("90.190.170.190")
+        
+        server2 = Comp()
+        server_db2 = DnsDb()
+        server_db2.add_record(Record("vk.com", "87.240.190.78"))
+        server2.set_dns_db(server_db2)
+
+        net = Network()
+        net.add_host(comp, "11.12.13.14")
+        net.add_host(server, "170.240.230.13")
+        net.add_host(server2, "90.190.170.190")
+        
+        comp.iface().setup(net, "11.12.13.14")
+        server.iface().setup(net, "170.240.230.13")
+        server2.iface().setup(net, "90.190.170.190")
+
+        ans = comp.resolve("vk.com")
+        self.assertEqual(ans, "87.240.190.78")
+        
+    def test_NON_recursive_dns_request(self):
+        comp = Comp()
+        local_db = DnsDb()
+        local_db.add_record(Record("narfu.ru", "78.37.98.67"))
+        comp.set_dns_db(local_db)
+        comp.iface().set_dns_server("10.20.30.40")
+
+        server = Comp()
+        server_db = DnsDb()
+        server_db.add_record(Record("ya.ru", "87.250.250.242"))
+        server.set_dns_db(server_db)
+        comp.iface().set_dns_server("20.30.40.50")
+        
+        server2 = Comp()
+        server_db2 = DnsDb()
+        server_db2.add_record(Record("vk.com", "87.240.190.78"))
+        server2.set_dns_db(server_db2)
+
+        net = Network()
+        net.add_host(comp, "11.12.13.14")
+        net.add_host(server, "10.20.30.40")
+        net.add_host(server2, "20.30.40.50")
+        
+        comp.iface().setup(net, "11.12.13.14")
+        server.iface().setup(net, "10.20.30.40")
+        server2.iface().setup(net, "20.30.40.50")
+
+        ans = comp.resolveNonRec("vk.com")
+        self.assertEqual(ans, "87.240.190.78")
+
+        
 if __name__ == '__main__':
     unittest.main()
 

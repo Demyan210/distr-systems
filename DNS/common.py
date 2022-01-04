@@ -51,6 +51,9 @@ class Comp:
     def iface(self):
         """Return network interface."""
         return self.__iface
+    
+    def localDb(self):
+        return self.__local_db
 
     def resolve(self, name):
         """Resolve name."""
@@ -90,18 +93,17 @@ class Network:
         """Ping sends ping to host."""
         if dst in self.__hosts:
             return f"ping from {src} to {dst}"
-
         return "Unknown host"
 
     def resolve(self, dns_addr, name):
-        #Recursive DNS
+        """Recursive DNS"""
         try:
             return self.__hosts[dns_addr].resolve(name)
         except KeyError:
             return None
      
     def resolveNonRec(self, dns_addr, name):
-        #Non-recursive DNS  
+        """Non-recursive DNS""" 
         if self.__hosts[dns_addr].localDb().resolve(name):
             addr = self.__hosts[dns_addr].localDb().resolve(name)
             if addr: 
