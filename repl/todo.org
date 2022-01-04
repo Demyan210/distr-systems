@@ -1,0 +1,7 @@
+* DONE ref: DistrDb: rename
+* DONE ref: split files
+* DONE feat: System: set number of replics
+* DONE feat: System: + stats()
+* TODO ref: extract class for stats
+* TODO feat: System: change main db
+* TODO feat: _sync: implement
