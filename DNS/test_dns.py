@@ -1,6 +1,6 @@
 import unittest
 from common import *
-from dns import DnsDb, Record
+from dns import *
 
 
 class TestDnsDb(unittest.TestCase):
@@ -145,10 +145,10 @@ class TestDns(unittest.TestCase):
         comp.set_dns_db(local_db)
         comp.iface().set_dns_server("10.20.30.40")
 
-        server = Comp()
-        server_db = DnsDb()
-        server_db.add_record(Record("ya.ru", "87.250.250.242"))
-        server.set_dns_db(server_db)
+        server1 = Comp()
+        server_db1 = DnsDb()
+        server_db1.add_record(Record("ya.ru", "87.250.250.242"))
+        server1.set_dns_db(server_db1)
         comp.iface().set_dns_server("20.30.40.50")
         
         server2 = Comp()
@@ -158,16 +158,22 @@ class TestDns(unittest.TestCase):
 
         net = Network()
         net.add_host(comp, "11.12.13.14")
-        net.add_host(server, "10.20.30.40")
+        net.add_host(server1, "10.20.30.40")
         net.add_host(server2, "20.30.40.50")
         
         comp.iface().setup(net, "11.12.13.14")
-        server.iface().setup(net, "10.20.30.40")
+        server1.iface().setup(net, "10.20.30.40")
         server2.iface().setup(net, "20.30.40.50")
 
         ans = comp.resolveNonRec("vk.com")
         self.assertEqual(ans, "87.240.190.78")
 
+class TestNode(unittest.TestCase):
+    def test_dns_Resolver_Bug(monkeypatch):
+        monkeypatch.setattr(dns_resolver, "monotonicTime", lambda: 0.0)
+        resolver = dns_resolver.DnsCachingResolver(600, 30)
+        ip = resolver.resolve('localhost')
+        assert ip == '127.0.0.1'
         
 if __name__ == '__main__':
     unittest.main()
