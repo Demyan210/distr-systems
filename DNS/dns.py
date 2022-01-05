@@ -43,6 +43,18 @@ class DnsDb:
         self.__addrs[record.get_addr()] = True
 
 
+class lookup:
+    """lookup Event"""
+
+
+class query:
+    """query Event"""
+
+
+class response:
+    """response Event"""
+
+
 class ReturnResponse:
     def response(self, peer, response):
         return response

@@ -100,3 +100,6 @@ class TestSystem_Stats(unittest.TestCase):
         stats = system.stats()
         self.assertEqual(stats['main'], 0)
         self.assertEqual(stats['repl'], [5, 5])
+
+if __name__ == '__main__':
+    unittest.main()

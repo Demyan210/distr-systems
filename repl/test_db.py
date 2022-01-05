@@ -1,6 +1,6 @@
 import unittest
-from record import Record
-from db import Database
+from record import *
+from db import *
 
 
 class TestDatabase(unittest.TestCase):
@@ -11,7 +11,8 @@ class TestDatabase(unittest.TestCase):
     def test_add_records(self):
         db = Database()
         db.add_record(Record(1))
-        self.assertEqual(db.records_num(), 1)
+        db.add_record(Record(2))
+        self.assertEqual(db.records_num(), 2)
 
     def test_add_same_record_twice(self):
         db = Database()
@@ -21,8 +22,8 @@ class TestDatabase(unittest.TestCase):
 
     def test_get_record_exists(self):
         db = Database()
-        db.add_record(Record(1))
-        self.assertIsNotNone(db.get_record(1))
+        db.add_record(Record(99))
+        self.assertIsNotNone(db.get_record(99))
 
     def test_get_record_not_exists(self):
         db = Database()
@@ -31,8 +32,10 @@ class TestDatabase(unittest.TestCase):
 
     def test_get_all(self):
         db = Database()
-        db.add_record(Record(1))
-        db.add_record(Record(2))
-        db.add_record(Record(3))
-        db.add_record(Record(4))
-        self.assertEqual(len(db.get_all()), 4)
+        n = 34545
+        for i in range(1, n + 1):
+            db.add_record(Record(i))
+        self.assertEqual(len(db.get_all()), n)
+
+if __name__ == '__main__':
+    unittest.main()
