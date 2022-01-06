@@ -29,6 +29,15 @@ class Database:
         """Return all records."""
         return self.__records
 
+    def get_break(self):
+        """Broken Database."""
+        self.__break = True
+        
+    def get_no_break(self):
+        """Working Database."""
+        #TODO break broken
+        self.__break = False
+
 
 class FoobarDB:
     def init(self, location):

@@ -4,6 +4,14 @@ from db import *
 
 
 class TestDatabase(unittest.TestCase):
+    def test_break(self):
+        db = Database()
+        self.assertTrue(db.get_break)
+
+    def test_no_break(self):
+        db = Database()
+        self.assertFalse(db.get_no_break())
+    
     def test_empty(self):
         db = Database()
         self.assertEqual(db.records_num(), 0)
@@ -37,11 +45,11 @@ class TestDatabase(unittest.TestCase):
             db.add_record(Record(i))
         self.assertEqual(len(db.get_all()), n)
 
-class FoobarDB(unittest.TestCase):
+"""class FoobarDB(unittest.TestCase):
     def test_empty(self):
         dab = FoobarDB()
         ans = dab.set()
-        dab.set(Record(1))
+        dab.set(Record(1))"""
     
 if __name__ == '__main__':
     unittest.main()

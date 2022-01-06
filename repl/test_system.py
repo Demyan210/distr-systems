@@ -50,6 +50,11 @@ class TestSystem(unittest.TestCase):
         system.add_record(Record(1))
         self.assertIsNotNone(system.get_record(1))
 
+    def test_break_main_Database(self): 
+        system = System()
+        ans = system.get_main().get_break
+        self.assertTrue(ans)
+
 
 class TestSystem_SetNumberOfReplics(unittest.TestCase):
     def test_1(self):
