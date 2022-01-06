@@ -59,6 +59,14 @@ class TestDns(unittest.TestCase):
         ans = comp.resolve("narfu.ru")
         self.assertEqual(ans, "1.2.3.4")
 
+    def test_no_answer_in_ip(self):
+        comp = Comp()
+        db = DnsDb()
+        db.add_record(Record("narfu.ru", "1.2.3.4.5"))
+        comp.set_dns_db(db)
+        ans = comp.resolve("narfu.ru")
+        self.assertNotEqual(ans, "1.2.3.4")
+
     def test_answer_from_dns_server(self):
         comp = Comp()
         local_db = DnsDb()
@@ -167,13 +175,6 @@ class TestDns(unittest.TestCase):
 
         ans = comp.resolveNonRec("vk.com")
         self.assertEqual(ans, "87.240.190.78")
-
-class TestNode(unittest.TestCase):
-    def test_dns_Resolver_Bug(monkeypatch):
-        monkeypatch.setattr(dns_resolver, "monotonicTime", lambda: 0.0)
-        resolver = dns_resolver.DnsCachingResolver(600, 30)
-        ip = resolver.resolve('localhost')
-        assert ip == '127.0.0.1'
         
 if __name__ == '__main__':
     unittest.main()

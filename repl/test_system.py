@@ -8,10 +8,11 @@ class TestSystem(unittest.TestCase):
         system = System()
         system.add_record(Record(1))
         system.add_record(Record(2))
+        system.add_record(Record(3))
         system.sync()
-        self.assertEqual(len(system.get_all()), 2)
+        self.assertEqual(len(system.get_all()), 3)
         self.assertIsNotNone(system.get_record(1))
-        self.assertIsNone(system.get_record(3))
+        self.assertIsNone(system.get_record(4))
 
     def test_get_databases(self):
         system = System()
