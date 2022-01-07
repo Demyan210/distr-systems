@@ -22,6 +22,16 @@ class TestSystem(unittest.TestCase):
     def test_add_record(self):
         system = System()
         system.add_record(Record(1))
+        system.add_record(Record(2))
+        self.assertEqual(system.get_main().records_num(), 2)
+        self.assertEqual(system.get_repl().records_num(), 0)
+
+    def test_delete_record(self):
+        system = System()
+        system.add_record(Record(1))
+        system.add_record(Record(2))
+        system.delete_record(Record(2))
+        self.assertNotEqual(system.get_main().records_num(), 2)
         self.assertEqual(system.get_main().records_num(), 1)
         self.assertEqual(system.get_repl().records_num(), 0)
 
@@ -106,6 +116,18 @@ class TestSystem_Stats(unittest.TestCase):
         stats = system.stats()
         self.assertEqual(stats['main'], 0)
         self.assertEqual(stats['repl'], [5, 5])
+
+    def test_delete_data(self):
+        system = System(2)
+        system.add_record(Record(1))
+        system.sync()
+        system.get_record(1)
+        system.get_record(2)
+        system.delete_record_id(1)
+        stats = system.stats()
+        self.assertEqual(stats['main'], 0)
+        self.assertNotEqual(stats['repl'], [1,1])
+        self.assertEqual(stats['repl'], [0,1])
 
 if __name__ == '__main__':
     unittest.main()

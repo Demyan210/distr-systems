@@ -18,6 +18,10 @@ class Database:
             raise ValueError("Duplicated ID")
         self.__records[r.get_id()] = r
 
+    def delete_record(self, r):
+        """Add record to database."""
+        del self.__records[r.get_id()]
+
     def get_record(self, record_id):
         """Get record by ID."""
         try:

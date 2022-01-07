@@ -48,6 +48,16 @@ class System:
             return rec
         return self.__main.get_record(record_id)
 
+    def delete_record(self, rec):
+        """Delete record ID."""
+        return self.__main.delete_record(rec)
+    
+    def delete_record_id(self, record_id):
+        """Delete record to database."""
+        rec = self.__repls[self.__ind].get_record(record_id)
+        self.__stats['repl'][self.__ind] -= 1
+        self.__update_ind()
+
     def get_all(self):
         """Return all records."""
         res = self.__repls[self.__ind].get_all()
