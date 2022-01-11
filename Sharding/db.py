@@ -16,6 +16,10 @@ class Database:
             raise ValueError("Duplicated ID")
         self.__records[r.get_id()] = r
 
+    def delete_record(self, r):
+        """Add record to database."""
+        del self.__records[r.get_id()]
+
     def get_record(self, record_id):
         """Get record by ID."""
         try:
@@ -26,3 +30,12 @@ class Database:
     def get_all(self):
         """Return all records."""
         return self.__records
+
+    def get_break(self):
+        """Broken Database."""
+        self.__break = True
+        
+    def get_no_break(self):
+        """Working Database."""
+        #TODO break broken
+        self.__break = False

@@ -22,6 +22,13 @@ class TestDatabase(unittest.TestCase):
         db.add_record(Record(2))
         self.assertEqual(db.records_num(), 2)
 
+    def test_delete_records(self):
+        db = Database()
+        db.add_record(Record(1))
+        db.add_record(Record(2))
+        db.delete_record(Record(2))
+        self.assertNotEqual(db.records_num(), 2)
+
     def test_add_same_record_twice(self):
         db = Database()
         db.add_record(Record(1))

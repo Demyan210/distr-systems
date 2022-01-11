@@ -54,11 +54,38 @@ class System:
         if rec:
             return rec
         return self.__main.get_record(record_id)
+    
+    def delete_record(self, rec):
+        """Delete record ID."""
+        return self.__main.delete_record(rec)
+
+    def delete_record2(self, rec):
+        """Delete record ID."""
+        return self.__main.delete_record(rec)
+    
+    def delete_record_id(self, record_id):
+        """Delete record to database."""
+        rec = self.__shards[self.__ind].get_record(record_id)
+        self.__stats['shard'][self.__ind] -= 1
+        self.__update_ind()
+
+    def delete_record_id2(self, record_id):
+        """Delete record to database."""
+        rec = self.__shards2[self.__ind].get_record(record_id)
+        self.__stats['shard2'][self.__ind] -= 1
+        self.__update_ind()
 
     def get_all(self):
         """Return all records."""
         res = self.__shards[self.__ind].get_all()
         self.__stats['shard'][self.__ind] += 1
+        self.__update_ind()
+        return res
+
+    def get_all2(self):
+        """Return all records."""
+        res = self.__shards[self.__ind].get_all()
+        self.__stats['shard2'][self.__ind] += 1
         self.__update_ind()
         return res
 

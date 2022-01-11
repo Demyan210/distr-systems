@@ -25,6 +25,15 @@ class TestSystem(unittest.TestCase):
         self.assertEqual(system.get_main().records_num(), 1)
         self.assertEqual(system.get_shard().records_num(), 0)
 
+    def test_delete_record(self):
+        system = System()
+        system.add_record(Record(1))
+        system.add_record(Record(2))
+        system.delete_record(Record(2))
+        self.assertNotEqual(system.get_main().records_num(), 2)
+        self.assertEqual(system.get_main().records_num(), 1)
+        self.assertEqual(system.get_shard().records_num(), 0)
+
     def test_add_record_and_sync(self):
         system = System()
         system.add_record(Record(1))
@@ -49,6 +58,11 @@ class TestSystem(unittest.TestCase):
         system = System()
         system.add_record(Record(1))
         self.assertIsNotNone(system.get_record(1))
+
+    def test_break_main_Database(self): 
+        system = System()
+        ans = system.get_main().get_break
+        self.assertTrue(ans)
 
 
 class TestSystem_SetNumberOfshardics(unittest.TestCase):
@@ -118,13 +132,17 @@ class TestSystem_Stats(unittest.TestCase):
         self.assertEqual(stats['main'], 0)
         self.assertEqual(stats['shard'], [5, 5])
 
-    def test_break(self):
-        system = System(1)
+    def test_delete_data(self):
+        system = System(2)
         system.add_record(Record(1))
         system.sync()
-        system.get_record2(1)
+        system.get_record(1)
+        system.get_record(2)
+        system.delete_record_id(1)
         stats = system.stats()
-        self.assertEqual(stats['shard2'], [1])
+        self.assertEqual(stats['main'], 0)
+        self.assertNotEqual(stats['shard'], [1,1])
+        self.assertEqual(stats['shard'], [0,1])
 
 
 class TestSystem_Breaks(unittest.TestCase):
